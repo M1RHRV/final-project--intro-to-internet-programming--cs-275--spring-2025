@@ -2,19 +2,20 @@ const gulp = require(`gulp`);
 const htmlValidator = require(`gulp-html`);
 const stylelint = require(`gulp-stylelint`);
 const eslint = require(`gulp-eslint`);
-const terser = require(`gulp-terser`);
 const cleanCSS = require(`gulp-clean-css`);
 const htmlmin = require(`gulp-htmlmin`);
 const babel = require(`gulp-babel`);
+const uglify = require(`gulp-uglify`);
 const browserSync = require(`browser-sync`).create();
 
-
+// Validate HTML
 let validateHTML = () => {
     return gulp.src(`app/html/*.html`)
         .pipe(htmlValidator())
         .pipe(gulp.dest(`app/validated`));
 };
 
+// Validate CSS
 let validateCSS = () => {
     return gulp.src(`app/css/*.css`)
         .pipe(stylelint({
@@ -22,6 +23,7 @@ let validateCSS = () => {
         }));
 };
 
+// Validate JS
 let validateJS = () => {
     return gulp.src(`app/js/*.js`)
         .pipe(eslint())
@@ -29,40 +31,45 @@ let validateJS = () => {
         .pipe(eslint.failAfterError());
 };
 
+let transpileJSForProd = () => {
+    return gulp.src(`app/js/*.js`)
+        .pipe(babel({ presets: [`@babel/preset-env`] }))
+        .pipe(gulp.dest(`temp/js`));
+};
+
+// Compress JS
+let compressJS = () => {
+    return gulp.src(`temp/js/*.js`)
+        .pipe(uglify())
+        .pipe(gulp.dest(`prod/js`));
+};
+
+// Compress HTML
 let compressHTML = () => {
     return gulp.src(`app/html/*.html`)
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(gulp.dest(`prod/html`));
 };
 
+// Compress CSS
 let compressCSS = () => {
     return gulp.src(`app/css/*.css`)
-        .pipe(cleanCSS())
+        .pipe(cleanCSS({ compatibility: `ie8` }))
         .pipe(gulp.dest(`prod/css`));
 };
 
-let compressJS = () => {
-    return gulp.src(`app/js/*.js`)
-        .pipe(gulp.dest(`prod/js`));
-};
-
+// Transpile JS for Development
 let transpileJSForDev = () => {
     return gulp.src(`app/js/*.js`)
         .pipe(babel({ presets: [`@babel/preset-env`] }))
         .pipe(gulp.dest(`app/transpiled`));
 };
 
-let transpileJSForProd = () => {
-    return gulp.src(`app/js/*.js`)
-        .pipe(babel({ presets: [`@babel/preset-env`] }))
-        .pipe(terser())
-        .pipe(gulp.dest(`prod`));
-};
-
+// Live Server with BrowserSync
 let serve = () => {
     browserSync.init({
         server: {
-            baseDir: `app`,
+            baseDir: [`./`, `./styles`, `temp`],
             index: `html/index.html`
         },
         port: 3000,
@@ -74,6 +81,6 @@ let serve = () => {
     gulp.watch(`app/js/*.js`, gulp.series(validateJS, transpileJSForDev)).on(`change`, browserSync.reload);
 };
 
-// Register tasks in Gulp
-gulp.task(`default`, gulp.series(validateHTML, validateCSS, validateJS, transpileJSForDev, serve));
-gulp.task(`build`, gulp.series(compressHTML, compressCSS, compressJS, transpileJSForProd));
+//My Tasks
+gulp.task(`dev`, gulp.series(validateHTML, validateCSS, validateJS, transpileJSForDev, serve));
+gulp.task(`build`, gulp.series(transpileJSForProd, compressJS, compressHTML, compressCSS));
