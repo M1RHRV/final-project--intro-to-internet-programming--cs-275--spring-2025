@@ -1,0 +1,32 @@
+{
+  "name": "final-project--intro-to-internet-programming--cs-275--spring-2025",
+  "version": "1.0.0",
+  "description": "☞ **Plagiarism in any form will result in failing the entire course. You’ve been duly warned.** ☜",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-warrior/final-project--intro-to-internet-programming--cs-275--spring-2025.git"
+  },
+  "keywords": [],
+  "author": "Amir Harvey",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/code-warrior/final-project--intro-to-internet-programming--cs-275--spring-2025/issues"
+  },
+  "homepage": "https://github.com/code-warrior/final-project--intro-to-internet-programming--cs-275--spring-2025#readme",
+  "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.1",
+    "browser-sync": "^3.0.4",
+    "gulp": "^5.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-cssnano": "^2.1.3",
+    "gulp-eslint": "^6.0.0",
+    "gulp-html-validator": "^0.0.5",
+    "gulp-uglify": "^3.0.2"
+  }
+}
