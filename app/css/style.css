@@ -1,0 +1,40 @@
+body {
+  font-family: monospace;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(173, 236, 221);
+}
+
+#diamond-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.diamond-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid rgb(255, 255, 255);
+  padding: 10px;
+}
+
+.odd-diamond {
+  line-height: 0.6;
+}
+
+.even-diamond {
+  line-height: 1.2;
+}
+
+.diamond-row {
+  font-size: 20px;
+  font-family: 'Space Mono', monospace;
+  white-space: pre;
+  text-align: center;
+}
